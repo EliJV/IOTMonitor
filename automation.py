@@ -39,29 +39,31 @@ while True:
         moisturepercent = (float("{0:.2f}".format(moisturepercent)))
         print("Soil Moisture Percentage: " + str(moisturepercent) + "%")
 
-		#Sends GPS Coordinates
-		cloud = CustomCloud(None, network='cellular')
-		location_obj = cloud.network.location
-		t = hologram_modem.convert_location_into_json(location_obj)
-		latitude = (float(t[60:70]))
-		longitude = (float(t[87:98]))
+	#Grabs location data according to cell service
+	cloud = CustomCloud(None, network='cellular')
+	location_obj = cloud.network.location
+	t = hologram_modem.convert_location_into_json(location_obj)
+	
+	#Grabs Latitude and Longitude from location data
+	latitude = (float(t[60:70]))
+	longitude = (float(t[87:98]))
 
         #Constructs payload of information to be sent
         payload = {"Voltage":voltage,"Moisture":moisturepercent,"Temperature":tempf,"Latitude":latitude,"Longitude":longitude)}
         
-		#Prints Kind of Internet Connection
+	#Prints Kind of Internet Connection
         hologram = HologramCloud(dict(), network='cellular')
         print('Cloud type: ' + str(hologram))
         
-		#Sends Moisture and Voltage to Hologram
+	#Sends Moisture and Voltage to Hologram
         recv=hologram.sendMessage(json.dumps(payload))
         
-		# Prints 'Message sent successfully'.)
+	# Prints ('Message sent successfully') if message sent succesfully
         print('RESPONSE MESSAGE: ' + hologram.getResultString(recv))
 		
-		#Turns on Comms Light if succesfully sent
-		if hologram.getResultString(recv)==1:
-                automationhat.light.comms.on()
+	#Turns on Comms Light if succesfully sent
+	if hologram.getResultString(recv)==1:
+		automationhat.light.comms.on()
 		
-		#Waits to send data again
+	#Waits to send data again
         time.sleep(refreshrate)
