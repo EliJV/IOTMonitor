@@ -49,7 +49,7 @@ while True:
 	longitude = (float(t[87:98]))
 
         #Constructs payload of information to be sent
-        payload = {"Voltage":voltage,"Moisture":moisturepercent,"Temperature":tempf,"Latitude":latitude,"Longitude":longitude)}
+        payload = {"Voltage":voltage,"Moisture":moisturepercent,"Temperature":tempf,"Latitude":latitude,"Longitude":longitude}
         
 	#Prints Kind of Internet Connection
         hologram = HologramCloud(dict(), network='cellular')
